@@ -1,13 +1,13 @@
-# Águia Branca — Backend (Sprint 2)
+# Águia Branca — Backend
 
-Backend da plataforma de gestão do conhecimento e projetos da Águia Branca, desenvolvido em **Java + Spring Boot**, com persistência em **MongoDB (Atlas)** e autenticação via **JWT**.
+Backend da plataforma de gestão do conhecimento e projetos da Águia Branca, desenvolvido em **Java + Spring Boot**, com persistência em **MongoDB** e autenticação via **JWT**.
 
 ## Sumário
 
 - [Tecnologias utilizadas](#tecnologias-utilizadas)
 - [Pré-requisitos](#pré-requisitos)
 - [Configuração do projeto](#configuração-do-projeto)
-- [Configurando o MongoDB Atlas](#configurando-o-mongodb-atlas)
+- [Configurando o MongoDB](#configurando-o-mongodb-atlas)
 - [Executando a aplicação](#executando-a-aplicação)
 - [Usuário inicial (seed)](#usuário-inicial-seed)
 - [Perfis de usuário e hierarquia](#perfis-de-usuário-e-hierarquia)
@@ -78,9 +78,9 @@ Se você (ou o avaliador) precisar criar/conectar um novo cluster do zero:
 4. Em **Network Access**, libere o IP de quem vai rodar a aplicação (ou "Allow Access from Anywhere" para ambiente de estudo/avaliação)
 5. Em **Database → Connect → Drivers → Java**, copie a connection string no formato:
    ```
-   mongodb+srv://<usuario>:<senha>@<cluster>.mongodb.net/?retryWrites=true&w=majority
+   mongodb+srv://<usuario>:<senha>@<cluster>.mongodb.net/?appName=NomeDoApp
    ```
-6. Adicione o nome do banco (`aguiabranca`) antes do `?`, exatamente como no exemplo da seção anterior
+6. Adicione o nome do banco (`aguiabranca`) depois do `?`, exatamente como no exemplo da seção anterior.
 
 O banco e as collections (`usuarios`, `estrategias`, `ideias`, `projetos`) são criados automaticamente pelo MongoDB na primeira vez que a aplicação grava um documento — não é necessário criar nada manualmente.
 
@@ -95,6 +95,23 @@ mvn spring-boot:run
 A aplicação sobe em `http://localhost:8080`.
 
 Se tudo estiver certo, o console deve exibir a mensagem de criação do usuário líder inicial (veja seção abaixo) e `Started AsasdaaguiaApplication` sem erros, com o driver do Mongo confirmando conexão com os hosts do cluster Atlas (não `localhost:27017`).
+
+## Docker 
+Se por qualquer motivo não de certo a configuração do Atlas, você pode optar por rodar a aplicação localmente, altere na sua `.env` em MONGODB_URI para o valor padrão do MongoDB.  
+
+```
+MONGODB_URI="mongodb://localhost:27017"
+```
+
+O arquivo docker-compose.yml já existe na aplicação, rode: 
+
+```
+docker compose up -d
+``` 
+ e em seguinda inicie a aplicação 
+ ```
+ mvn spring-boot:run
+ ```
 
 ## Usuário inicial (seed)
 
