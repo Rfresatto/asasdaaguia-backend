@@ -64,7 +64,7 @@ class EstrategiaServiceTest {
         ArgumentCaptor<EstrategiaModel> captor = ArgumentCaptor.forClass(EstrategiaModel.class);
         verify(estrategiaRepository, times(2)).save(captor.capture());
 
-        EstrategiaModel primeiroSalvamento = captor.getAllValues().get(0);
+        EstrategiaModel primeiroSalvamento = captor.getAllValues().getFirst();
         assertEquals("antiga-id", primeiroSalvamento.getId());
         assertFalse(primeiroSalvamento.isVigente());
 

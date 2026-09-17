@@ -23,8 +23,6 @@ public class ValidateToken extends OncePerRequestFilter {
     private final TokenService tokenService;
     private final CustomUserDetailsService userDetailsService;
 
-    private final AntPathMatcher pathMatcher = new AntPathMatcher();
-
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,

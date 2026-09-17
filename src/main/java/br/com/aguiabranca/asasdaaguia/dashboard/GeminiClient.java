@@ -39,10 +39,10 @@ public class GeminiClient {
                     .body(Map.class);
 
             List<Map<String, Object>> candidates = (List<Map<String, Object>>) resposta.get("candidates");
-            Map<String, Object> content = (Map<String, Object>) candidates.get(0).get("content");
+            Map<String, Object> content = (Map<String, Object>) candidates.getFirst().get("content");
             List<Map<String, Object>> parts = (List<Map<String, Object>>) content.get("parts");
 
-            return (String) parts.get(0).get("text");
+            return (String) parts.getFirst().get("text");
         } catch (Exception e) {
             throw new NegocioException("Erro ao gerar insights com IA: " + e.getMessage());
         }

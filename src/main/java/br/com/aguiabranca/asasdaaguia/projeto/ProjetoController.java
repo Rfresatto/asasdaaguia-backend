@@ -43,6 +43,7 @@ public class ProjetoController {
     }
 
 
+
     @Operation(summary = "Atualizar progresso do projeto", description = "Atualiza etapa, retorno financeiro e produtividade ganha do projeto, para acompanhamento de resultados. Somente GESTOR.")
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('GESTOR')")

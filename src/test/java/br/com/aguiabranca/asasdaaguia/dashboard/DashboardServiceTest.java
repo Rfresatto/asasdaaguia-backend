@@ -81,7 +81,7 @@ class DashboardServiceTest {
         ResumoGeralDTO resultado = dashboardService.resumoGeral();
 
         assertEquals(BigDecimal.ZERO, resultado.roiMedio());
-        assertEquals(BigDecimal.ZERO, resultado.projetos().get(0).roi());
+        assertEquals(BigDecimal.ZERO, resultado.projetos().getFirst().roi());
     }
 
     @Test
@@ -99,7 +99,7 @@ class DashboardServiceTest {
         ResumoGeralDTO resultado = dashboardService.resumoGeral();
 
         assertEquals(new BigDecimal("10000.00").negate(), resultado.lucroTotal());
-        assertEquals(BigDecimal.ZERO, resultado.projetos().get(0).retornoFinanceiro());
+        assertEquals(BigDecimal.ZERO, resultado.projetos().getFirst().retornoFinanceiro());
     }
 
     @Test
@@ -113,7 +113,7 @@ class DashboardServiceTest {
         List<ResumoProjetoDTO> resultado = dashboardService.resumoPorEstrategia("estrategia-1");
 
         assertEquals(1, resultado.size());
-        assertEquals("estrategia-1", resultado.get(0).estrategiaId());
+        assertEquals("estrategia-1", resultado.getFirst().estrategiaId());
         verify(projetoRepository, never()).findAll();
     }
 
