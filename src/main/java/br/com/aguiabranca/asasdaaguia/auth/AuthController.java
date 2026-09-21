@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Autenticação")
@@ -25,11 +26,18 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(dto));
     }
 
-    @Operation(summary = "Registrar usuario", description = "Cadastra um novo usuario (Operador, Gestor ou Lideranca). Somente usuarios com role LIDERANCA podem executar esta acao.")
+    @Operation(summary = "Registrar usuario", description = "Cadastra um novo usuario. Lideranca pode criar Gestor ou Operador; Gestor so pode criar Operador.")
     @PostMapping("/registro")
-    @PreAuthorize("hasRole('LIDERANCA')")
-    public ResponseEntity<UsuarioResponseDTO> registrar(@Valid @RequestBody RegistroDTO dto) {
-        UsuarioResponseDTO criado = authService.registrar(dto);
+    @PreAuthorize("hasRole('GESTOR')") // com hierarquia, LIDERANCA tambem satisfaz
+    public ResponseEntity<UsuarioResponseDTO> registrar(@Valid @RequestBody RegistroDTO dto, Authentication authentication) {
+        String roleCriador = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .filter(a -> a.startsWith("ROLE_"))
+                .findFirst()
+                .map(a -> a.substring(5))
+                .orElse("");
+
+        UsuarioResponseDTO criado = authService.registrar(dto, roleCriador);
         return ResponseEntity.status(HttpStatus.CREATED).body(criado);
     }
 

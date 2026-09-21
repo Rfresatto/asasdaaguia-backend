@@ -32,7 +32,9 @@ public class AuthService {
         return tokenService.gerarToken(usuario);
     }
 
-    public UsuarioResponseDTO registrar(RegistroDTO dto) {
+    public UsuarioResponseDTO registrar(RegistroDTO dto, String roleCriador) {
+        validarPermissaoCriacao(roleCriador, dto.role());
+
         if (usuarioRepository.existsByEmail(dto.email())) {
             throw new NegocioException("Ja existe um usuario cadastrado com este email");
         }
@@ -47,6 +49,15 @@ public class AuthService {
 
         usuarioRepository.save(usuario);
         return UsuarioResponseDTO.from(usuario);
+    }
+
+    private void validarPermissaoCriacao(String roleCriador, Role roleAlvo) {
+        if ("LIDERANCA".equals(roleCriador)) {
+            return;
+        }
+        if ("GESTOR".equals(roleCriador) && roleAlvo != Role.OPERADOR) {
+            throw new NegocioException("Gestores so podem cadastrar usuarios com role OPERADOR");
+        }
     }
 
     public UsuarioLogadoDTO buscarUsuarioLogado(String email) {
