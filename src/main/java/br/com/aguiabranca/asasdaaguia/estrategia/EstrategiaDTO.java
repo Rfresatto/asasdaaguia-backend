@@ -6,6 +6,7 @@ public record EstrategiaDTO(
         @NotBlank String titulo,
         @NotBlank String descricao,
         @NotBlank String categoria,
-        @NotBlank String campanha
+        @NotBlank String campanha,
+        @NotBlank String peso
 ) {
 }

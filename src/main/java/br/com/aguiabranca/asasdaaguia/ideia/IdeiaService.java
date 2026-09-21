@@ -1,5 +1,6 @@
 package br.com.aguiabranca.asasdaaguia.ideia;
 
+import br.com.aguiabranca.asasdaaguia.auth.UsuarioRepository;
 import br.com.aguiabranca.asasdaaguia.common.exception.AcessoNegadoException;
 import br.com.aguiabranca.asasdaaguia.common.exception.RecursoNaoEncontradoException;
 import br.com.aguiabranca.asasdaaguia.estrategia.EstrategiaService;
@@ -15,6 +16,7 @@ public class IdeiaService {
 
     private final IdeiaRepository ideiaRepository;
     private final EstrategiaService estrategiaService;
+    private final UsuarioRepository usuarioRepository;
 
     public IdeiaModel criar(IdeiaDTO dto, String operadorId) {
         String estrategiaVigenteId = estrategiaService.buscarVigente().getId();
@@ -69,7 +71,15 @@ public class IdeiaService {
     public IdeiaModel aprovar(String id) {
         IdeiaModel existente = buscarPorId(id);
         existente.setStatus(IdeiaModel.StatusIdeia.APROVADA);
+        incrementarXpDoOperador(existente.getOperadorId());
         return ideiaRepository.save(existente);
+    }
+
+    private void incrementarXpDoOperador(String operadorEmail) {
+        usuarioRepository.findByEmail(operadorEmail).ifPresent(usuario -> {
+            usuario.setXp(usuario.getXp() + 50);
+            usuarioRepository.save(usuario);
+        });
     }
 
     public IdeiaModel reprovar(String id) {
@@ -93,5 +103,6 @@ public class IdeiaService {
 
         return ideiaRepository.save(existente);
     }
+
 
 }

@@ -32,4 +32,6 @@ public class EstrategiaModel {
     private boolean vigente;
 
     private String criadoPorId;
+
+    private String peso;
 }

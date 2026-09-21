@@ -36,6 +36,7 @@ public class EstrategiaService {
                 .categoria(dto.categoria())
                 .campanha(dto.campanha())
                 .dataCriacao(LocalDate.now())
+                .peso(dto.peso())
                 .vigente(true)
                 .criadoPorId(liderancaId)
                 .build();
@@ -50,6 +51,7 @@ public class EstrategiaService {
         existente.setDescricao(dto.descricao());
         existente.setCategoria(dto.categoria());
         existente.setCampanha(dto.campanha());
+        existente.setPeso(dto.peso());
 
         return estrategiaRepository.save(existente);
     }

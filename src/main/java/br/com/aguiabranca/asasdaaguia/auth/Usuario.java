@@ -28,4 +28,7 @@ public class Usuario {
     private Role role;
 
     private boolean ativo;
+
+    @Builder.Default
+    private int xp = 0;
 }

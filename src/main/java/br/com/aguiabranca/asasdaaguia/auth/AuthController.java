@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Autenticação")
@@ -30,5 +31,11 @@ public class AuthController {
     public ResponseEntity<UsuarioResponseDTO> registrar(@Valid @RequestBody RegistroDTO dto) {
         UsuarioResponseDTO criado = authService.registrar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(criado);
+    }
+
+    @Operation(summary = "Buscar dados do usuario logado", description = "Retorna nome, email, role e XP atual do usuario autenticado, extraido do token JWT.")
+    @GetMapping("/me")
+    public ResponseEntity<UsuarioLogadoDTO> buscarUsuarioLogado(Authentication authentication) {
+        return ResponseEntity.ok(authService.buscarUsuarioLogado(authentication.getName()));
     }
 }

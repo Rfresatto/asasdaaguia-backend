@@ -2,6 +2,7 @@ package br.com.aguiabranca.asasdaaguia.auth;
 
 import br.com.aguiabranca.asasdaaguia.common.exception.AutenticacaoException;
 import br.com.aguiabranca.asasdaaguia.common.exception.NegocioException;
+import br.com.aguiabranca.asasdaaguia.common.exception.RecursoNaoEncontradoException;
 import br.com.aguiabranca.asasdaaguia.config.security.TokenDTO;
 import br.com.aguiabranca.asasdaaguia.config.security.TokenService;
 import lombok.RequiredArgsConstructor;
@@ -46,5 +47,11 @@ public class AuthService {
 
         usuarioRepository.save(usuario);
         return UsuarioResponseDTO.from(usuario);
+    }
+
+    public UsuarioLogadoDTO buscarUsuarioLogado(String email) {
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Usuario nao encontrado"));
+        return UsuarioLogadoDTO.from(usuario);
     }
 }
