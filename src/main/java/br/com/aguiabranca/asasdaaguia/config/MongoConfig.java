@@ -1,4 +1,4 @@
-package br.com.aguiabranca.asasdaaguia;
+package br.com.aguiabranca.asasdaaguia.config;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
